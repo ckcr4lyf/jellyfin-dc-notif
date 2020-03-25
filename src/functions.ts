@@ -81,7 +81,7 @@ export async function scanDB (db: any, timeFrom: Date): Promise<Date> {
 
                 if (thatDate > timeFrom){
                     log("Sending a message...");
-                    await sendMessage(row.Name + " - " + row.DateCreated.toISOString());
+                    await sendMessage(row.Name + " - " + thatDate.toISOString());
                     log("Message sent for " + row.Name + "!");                    
                 }
             }

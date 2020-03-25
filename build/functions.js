@@ -120,7 +120,7 @@ function scanDB(db, timeFrom) {
                                     thatDate = new Date(row.DateCreated);
                                     if (!(thatDate > timeFrom)) return [3 /*break*/, 3];
                                     log("Sending a message...");
-                                    return [4 /*yield*/, sendMessage(row.Name + " - " + row.DateCreated.toISOString())];
+                                    return [4 /*yield*/, sendMessage(row.Name + " - " + thatDate.toISOString())];
                                 case 2:
                                     _a.sent();
                                     log("Message sent for " + row.Name + "!");
