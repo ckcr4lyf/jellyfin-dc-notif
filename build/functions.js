@@ -122,7 +122,7 @@ function scanDB(db, timeFrom) {
                                     if (!(i < rows.length)) return [3 /*break*/, 4];
                                     row = rows[i];
                                     log("Sending a message...");
-                                    return [4 /*yield*/, sendMessage(row.Name)];
+                                    return [4 /*yield*/, sendMessage(row.Name + " - " + row.DateCreated.toISOString())];
                                 case 2:
                                     _a.sent();
                                     log("Message sent for " + row.Name + "!");
@@ -131,12 +131,7 @@ function scanDB(db, timeFrom) {
                                     i++;
                                     return [3 /*break*/, 1];
                                 case 4:
-                                    if (rows.length > 0) {
-                                        timeFrom = new Date(rows[rows.length - 1].DateCreated); // Update with the most recent time.
-                                    }
-                                    else {
-                                        timeFrom = new Date();
-                                    }
+                                    timeFrom = new Date();
                                     console.log("Scan Complete.");
                                     resolve(timeFrom); //If there was nothing new, then set it to the current date
                                     return [2 /*return*/];

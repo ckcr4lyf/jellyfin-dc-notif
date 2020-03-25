@@ -83,16 +83,11 @@ export async function scanDB (db: any, timeFrom: Date): Promise<Date> {
             for (let i = 0; i < rows.length; i++){
                 let row: action = rows[i];
                 log("Sending a message...");
-                await sendMessage(row.Name);
+                await sendMessage(row.Name + " - " + row.DateCreated.toISOString());
                 log("Message sent for " + row.Name + "!");
             }
         
-            if (rows.length > 0){
-                timeFrom = new Date(rows[rows.length - 1].DateCreated); // Update with the most recent time.
-            } else {
-                timeFrom = new Date();
-            }
-    
+            timeFrom = new Date();
             console.log("Scan Complete.");
             resolve(timeFrom); //If there was nothing new, then set it to the current date
         });
