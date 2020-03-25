@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "noImplicitAny": true,
+        "removeComments": false,
+        "preserveConstEnums": true,
+        "outDir": "./build/",
+        "sourceMap": true,
+        "resolveJsonModule": true
+    },
+    "include": [
+        "src/*"
+    ],
+    "exclude": [
+        "node_modules",
+    ]
+}

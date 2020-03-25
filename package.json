@@ -1,0 +1,17 @@
+{
+  "name": "jellyfin-stats",
+  "version": "1.0.0",
+  "description": "Push notifications on Jellyfin events",
+  "main": "index.js",
+  "scripts": {
+    "test": "tsc && node ./build/index.js",
+    "build": "tsc",
+    "start": "node ./build/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^13.9.3",
+    "sqlite3": "^4.1.1"
+  }
+}
