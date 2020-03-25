@@ -17,11 +17,6 @@ function wait (time: number): Promise<boolean> {
 
 }
 
-function generateSQLQuery (timeFrom: Date) {
-    const sql: string = `SELECT * FROM ActivityLog WHERE Type IN ("VideoPlayback", "VideoPlaybackStopped") AND Datecreated > "` + timeFrom.toISOString() + `" ORDER BY Datecreated DESC`;
-    return sql;
-}
-
 async function sendMessage (message: string): Promise<boolean> {
 
     const data = JSON.stringify({
@@ -68,7 +63,7 @@ async function sendMessage (message: string): Promise<boolean> {
 
 export async function scanDB (db: any, timeFrom: Date): Promise<Date> {
     
-    let sql: string = generateSQLQuery(timeFrom);
+    let sql: string = `SELECT * FROM ActivityLog WHERE Type IN ("VideoPlayback", "VideoPlaybackStopped") ORDER BY Datecreated DESC LIMIT 10`;
     console.log("Scanning DB...");
     
     return new Promise( (resolve, reject) => {
@@ -82,9 +77,13 @@ export async function scanDB (db: any, timeFrom: Date): Promise<Date> {
         
             for (let i = 0; i < rows.length; i++){
                 let row: action = rows[i];
-                log("Sending a message...");
-                await sendMessage(row.Name + " - " + row.DateCreated.toISOString());
-                log("Message sent for " + row.Name + "!");
+                let thatDate = new Date(row.DateCreated);
+
+                if (thatDate > timeFrom){
+                    log("Sending a message...");
+                    await sendMessage(row.Name + " - " + row.DateCreated.toISOString());
+                    log("Message sent for " + row.Name + "!");                    
+                }
             }
         
             timeFrom = new Date();

@@ -50,10 +50,6 @@ function wait(time) {
         }, time);
     });
 }
-function generateSQLQuery(timeFrom) {
-    var sql = "SELECT * FROM ActivityLog WHERE Type IN (\"VideoPlayback\", \"VideoPlaybackStopped\") AND Datecreated > \"" + timeFrom.toISOString() + "\" ORDER BY Datecreated DESC";
-    return sql;
-}
 function sendMessage(message) {
     return __awaiter(this, void 0, void 0, function () {
         var data, options;
@@ -103,11 +99,11 @@ function scanDB(db, timeFrom) {
         var sql;
         var _this = this;
         return __generator(this, function (_a) {
-            sql = generateSQLQuery(timeFrom);
+            sql = "SELECT * FROM ActivityLog WHERE Type IN (\"VideoPlayback\", \"VideoPlaybackStopped\") ORDER BY Datecreated DESC LIMIT 10";
             console.log("Scanning DB...");
             return [2 /*return*/, new Promise(function (resolve, reject) {
                     db.all(sql, [], function (err, rows) { return __awaiter(_this, void 0, void 0, function () {
-                        var i, row;
+                        var i, row, thatDate;
                         return __generator(this, function (_a) {
                             switch (_a.label) {
                                 case 0:
@@ -121,6 +117,8 @@ function scanDB(db, timeFrom) {
                                 case 1:
                                     if (!(i < rows.length)) return [3 /*break*/, 4];
                                     row = rows[i];
+                                    thatDate = new Date(row.DateCreated);
+                                    if (!(thatDate > timeFrom)) return [3 /*break*/, 3];
                                     log("Sending a message...");
                                     return [4 /*yield*/, sendMessage(row.Name + " - " + row.DateCreated.toISOString())];
                                 case 2:
