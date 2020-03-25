@@ -38,6 +38,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var https = require("https");
 var config_json_1 = require("./config.json");
+function log(msg) {
+    if (config_json_1.debug == true) {
+        console.log(msg);
+    }
+}
 function wait(time) {
     return new Promise(function (resolve, reject) {
         setTimeout(function () {
@@ -73,13 +78,17 @@ function sendMessage(message) {
                     _a.sent(); //To avoid discord rate limit. Bad to hardcode yes I know.
                     return [2 /*return*/, new Promise(function (resolve, reject) {
                             var req = https.request(options, function (res) {
-                                console.log('statusCode:', res.statusCode);
+                                log('statusCode:' + res.statusCode.toString());
                                 res.on("end", function () {
+                                    resolve(true);
+                                });
+                                res.on("close", function () {
                                     resolve(true);
                                 });
                             });
                             req.on("error", function (err) {
                                 console.error(err);
+                                reject(false);
                             });
                             req.write(data);
                             req.end();
@@ -105,15 +114,17 @@ function scanDB(db, timeFrom) {
                                         console.log(err);
                                     }
                                     rows = rows.reverse();
+                                    log("We have " + rows.length.toString() + " rows.");
                                     i = 0;
                                     _a.label = 1;
                                 case 1:
                                     if (!(i < rows.length)) return [3 /*break*/, 4];
                                     row = rows[i];
+                                    log("Sending a message...");
                                     return [4 /*yield*/, sendMessage(row.Name)];
                                 case 2:
                                     _a.sent();
-                                    console.log(row.Name);
+                                    log("Message sent for " + row.Name + "!");
                                     _a.label = 3;
                                 case 3:
                                     i++;
