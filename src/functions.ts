@@ -1,6 +1,12 @@
 import * as https from 'https';
-import { webhook } from './config.json';
+import { webhook, debug } from './config.json';
 import { action } from './declarations';
+
+function log (msg: string) {
+    if (debug == true){
+        console.log(msg);
+    }
+}
 
 function wait (time: number): Promise<boolean> {
     return new Promise( (resolve, reject) => {
@@ -38,15 +44,20 @@ async function sendMessage (message: string): Promise<boolean> {
     return new Promise( (resolve, reject) => {
 
         const req = https.request(options, res => {
-            console.log('statusCode:', res.statusCode);
+            log('statusCode:' + res.statusCode.toString());
     
             res.on("end", () => {
+                resolve(true);
+            });
+
+            res.on("close", () => {
                 resolve(true);
             })
         });
     
         req.on("error", err => {
             console.error(err);
+            reject(false);
         })
     
         req.write(data);
@@ -66,11 +77,13 @@ export async function scanDB (db: any, timeFrom: Date): Promise<Date> {
             }
         
             rows = rows.reverse();
+            log("We have " + rows.length.toString() + " rows.");
         
             for (let i = 0; i < rows.length; i++){
                 let row: action = rows[i];
+                log("Sending a message...");
                 await sendMessage(row.Name);
-                console.log(row.Name);
+                log("Message sent for " + row.Name + "!");
             }
         
             if (rows.length > 0){

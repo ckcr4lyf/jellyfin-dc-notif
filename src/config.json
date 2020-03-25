@@ -1,4 +1,5 @@
 {
     "webhook": "WEBHOOK_URL_HERE",
-    "dbpath": "PATH_TO_JELLYFIN_DB_HERE"
+    "dbpath": "PATH_TO_JELLYFIN_DB_HERE",
+    "debug": false
 }
