@@ -79,12 +79,13 @@ function sendMessage(message) {
                     return [2 /*return*/, new Promise(function (resolve, reject) {
                             var req = https.request(options, function (res) {
                                 log('statusCode:' + res.statusCode.toString());
-                                res.on("end", function () {
-                                    resolve(true);
-                                });
-                                res.on("close", function () {
-                                    resolve(true);
-                                });
+                                resolve(true);
+                                // res.on("end", () => {
+                                //     resolve(true);
+                                // });
+                                // res.on("close", () => {
+                                //     resolve(true);
+                                // });
                             });
                             req.on("error", function (err) {
                                 console.error(err);

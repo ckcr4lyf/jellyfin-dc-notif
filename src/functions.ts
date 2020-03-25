@@ -45,14 +45,15 @@ async function sendMessage (message: string): Promise<boolean> {
 
         const req = https.request(options, res => {
             log('statusCode:' + res.statusCode.toString());
-    
-            res.on("end", () => {
-                resolve(true);
-            });
+            resolve(true);
 
-            res.on("close", () => {
-                resolve(true);
-            })
+            // res.on("end", () => {
+            //     resolve(true);
+            // });
+
+            // res.on("close", () => {
+            //     resolve(true);
+            // });
         });
     
         req.on("error", err => {
