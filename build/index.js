@@ -40,8 +40,7 @@ var sqlite3 = require('sqlite3').verbose();
 var functions_1 = require("./functions");
 var config_json_1 = require("./config.json");
 var fs = require("fs");
-// let timeFrom = new Date();
-var timeFrom = new Date("2020-03-25 12:34:35.8228137Z"); //Hardcoded for testing
+var timeFrom = new Date();
 var lock = false;
 if (!fs.existsSync(config_json_1.dbpath)) {
     console.log("DB (at given path) does not exist! Check ./build/config.json");
@@ -61,11 +60,9 @@ fs.watch(config_json_1.dbpath, function (event, filename) { return __awaiter(voi
                     return [2 /*return*/];
                 }
                 lock = true;
-                console.log(event, filename);
                 return [4 /*yield*/, functions_1.scanDB(db, timeFrom)];
             case 1:
                 timeFrom = _a.sent();
-                console.log("New timeFrom is", timeFrom);
                 lock = false;
                 return [2 /*return*/];
         }

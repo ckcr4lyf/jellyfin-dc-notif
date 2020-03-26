@@ -76,12 +76,6 @@ function sendMessage(message) {
                             var req = https.request(options, function (res) {
                                 log('statusCode:' + res.statusCode.toString());
                                 resolve(true);
-                                // res.on("end", () => {
-                                //     resolve(true);
-                                // });
-                                // res.on("close", () => {
-                                //     resolve(true);
-                                // });
                             });
                             req.on("error", function (err) {
                                 console.error(err);
@@ -100,7 +94,7 @@ function scanDB(db, timeFrom) {
         var _this = this;
         return __generator(this, function (_a) {
             sql = "SELECT * FROM ActivityLog WHERE Type IN (\"VideoPlayback\", \"VideoPlaybackStopped\") ORDER BY Datecreated DESC LIMIT 10";
-            console.log("Scanning DB...");
+            log("Scanning DB...");
             return [2 /*return*/, new Promise(function (resolve, reject) {
                     db.all(sql, [], function (err, rows) { return __awaiter(_this, void 0, void 0, function () {
                         var i, row, thatDate;
@@ -120,7 +114,7 @@ function scanDB(db, timeFrom) {
                                     thatDate = new Date(row.DateCreated);
                                     if (!(thatDate > timeFrom)) return [3 /*break*/, 3];
                                     log("Sending a message...");
-                                    return [4 /*yield*/, sendMessage(row.Name + " - " + thatDate.toISOString())];
+                                    return [4 /*yield*/, sendMessage(row.Name)];
                                 case 2:
                                     _a.sent();
                                     log("Message sent for " + row.Name + "!");
@@ -130,7 +124,7 @@ function scanDB(db, timeFrom) {
                                     return [3 /*break*/, 1];
                                 case 4:
                                     timeFrom = new Date();
-                                    console.log("Scan Complete.");
+                                    log("Scan Complete.");
                                     resolve(timeFrom); //If there was nothing new, then set it to the current date
                                     return [2 /*return*/];
                             }
