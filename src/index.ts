@@ -4,8 +4,7 @@ import { scanDB } from './functions';
 import { dbpath } from './config.json';
 import * as fs from 'fs';
 
-// let timeFrom = new Date();
-let timeFrom = new Date("2020-03-25 12:34:35.8228137Z"); //Hardcoded for testing
+let timeFrom = new Date();
 let lock = false;
 
 if(!fs.existsSync(dbpath)){
@@ -28,8 +27,6 @@ fs.watch(dbpath, async (event, filename) => {
     }
 
     lock = true;
-    console.log(event, filename);
     timeFrom = await scanDB(db, timeFrom);
-    console.log("New timeFrom is", timeFrom);
     lock = false;
 });

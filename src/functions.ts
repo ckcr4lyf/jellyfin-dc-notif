@@ -41,14 +41,6 @@ async function sendMessage (message: string): Promise<boolean> {
         const req = https.request(options, res => {
             log('statusCode:' + res.statusCode.toString());
             resolve(true);
-
-            // res.on("end", () => {
-            //     resolve(true);
-            // });
-
-            // res.on("close", () => {
-            //     resolve(true);
-            // });
         });
     
         req.on("error", err => {
@@ -64,7 +56,7 @@ async function sendMessage (message: string): Promise<boolean> {
 export async function scanDB (db: any, timeFrom: Date): Promise<Date> {
     
     let sql: string = `SELECT * FROM ActivityLog WHERE Type IN ("VideoPlayback", "VideoPlaybackStopped") ORDER BY Datecreated DESC LIMIT 10`;
-    console.log("Scanning DB...");
+    log("Scanning DB...");
     
     return new Promise( (resolve, reject) => {
         db.all(sql, [], async (err: any, rows: action[]) => {
@@ -79,15 +71,15 @@ export async function scanDB (db: any, timeFrom: Date): Promise<Date> {
                 let row: action = rows[i];
                 let thatDate = new Date(row.DateCreated);
 
-                if (thatDate > timeFrom){
+                if (thatDate > timeFrom){ //Couldnt get the date shit to work accurately in the SQL query. Oh well.
                     log("Sending a message...");
-                    await sendMessage(row.Name + " - " + thatDate.toISOString());
+                    await sendMessage(row.Name);
                     log("Message sent for " + row.Name + "!");                    
                 }
             }
         
             timeFrom = new Date();
-            console.log("Scan Complete.");
+            log("Scan Complete.");
             resolve(timeFrom); //If there was nothing new, then set it to the current date
         });
     });
