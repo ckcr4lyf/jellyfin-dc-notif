@@ -27,6 +27,11 @@ fs.watch(dbpath, async (event, filename) => {
     }
 
     lock = true;
-    timeFrom = await scanDB(db, timeFrom);
+    try {
+        timeFrom = await scanDB(db, timeFrom);
+    } catch (error){
+        console.log("Failed scan", error);
+    }
+    
     lock = false;
 });

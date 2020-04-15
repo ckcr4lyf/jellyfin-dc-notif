@@ -62,12 +62,12 @@ export async function scanDB (db: any, timeFrom: Date): Promise<Date> {
         db.all(sql, [], async (err: any, rows: action[]) => {
             if (err){
                 console.log(err);
-                return;
+                reject(false);
             }
 
             if (!rows){
                 console.log("No rows!");
-                return;
+                reject(false);
             }
         
             rows = rows.reverse();

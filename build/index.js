@@ -53,6 +53,7 @@ var db = new sqlite3.Database(config_json_1.dbpath, function (err) {
     console.log("Connected to DB.");
 });
 fs.watch(config_json_1.dbpath, function (event, filename) { return __awaiter(void 0, void 0, void 0, function () {
+    var error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -60,9 +61,18 @@ fs.watch(config_json_1.dbpath, function (event, filename) { return __awaiter(voi
                     return [2 /*return*/];
                 }
                 lock = true;
-                return [4 /*yield*/, functions_1.scanDB(db, timeFrom)];
+                _a.label = 1;
             case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, functions_1.scanDB(db, timeFrom)];
+            case 2:
                 timeFrom = _a.sent();
+                return [3 /*break*/, 4];
+            case 3:
+                error_1 = _a.sent();
+                console.log("Failed scan", error_1);
+                return [3 /*break*/, 4];
+            case 4:
                 lock = false;
                 return [2 /*return*/];
         }

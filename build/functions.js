@@ -103,6 +103,11 @@ function scanDB(db, timeFrom) {
                                 case 0:
                                     if (err) {
                                         console.log(err);
+                                        reject(false);
+                                    }
+                                    if (!rows) {
+                                        console.log("No rows!");
+                                        reject(false);
                                     }
                                     rows = rows.reverse();
                                     log("We have " + rows.length.toString() + " rows.");
